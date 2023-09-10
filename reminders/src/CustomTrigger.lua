@@ -6,12 +6,9 @@ function(event, unit)
             shouldConsolidate, spellId = UnitBuff("player", auraName, nil, "PLAYER");
 
             if spellId then
-                -- The player has the specified buff
-                print("You have the buff: " .. auraName);
                 return false;
             end
         end
-
         return true;
     end
 end
