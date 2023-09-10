@@ -1,10 +1,11 @@
-print("AutoReforge Loaded...");
+-- Made by Poli
+
 aura_env.enchants = MYSTIC_ENCHANTS
 
 if not PoliMysticEnchantingFrameAutoReforgeButton then
-    local button = CreateFrame("Button", "PoliMysticEnchantingFrameAutoReforgeButton", EnchantCollection.Slots.ReforgeTab, "UIPanelButtonTemplate")
-    button:SetWidth(125)
-    button:SetHeight(25)
+    local button = CreateFrame("Button", "PoliMysticEnchantingFrameAutoReforgeButton", MysticEnchantingFrame, "UIPanelButtonTemplate")
+    button:SetWidth(120)
+    button:SetHeight(22)
     button:SetPoint("TOPLEFT", 120, -36)
     button:Disable()
     button:RegisterForClicks("AnyUp")
@@ -22,7 +23,6 @@ if not PoliMysticEnchantingFrameAutoReforgeButton then
 
     EnchantCollection.Slots.ReforgeTab.Button1:HookScript("OnDisable",
             function()
-                print("OnDisable")
                 PoliMysticEnchantingFrameAutoReforgeButton:Disable()
                 WeakAuras.ScanEvents("POLI_REFORGE_ITEM_UPDATE")
             end
@@ -30,30 +30,15 @@ if not PoliMysticEnchantingFrameAutoReforgeButton then
 
     EnchantCollection.Slots.ReforgeTab.Button1:HookScript("OnEnable",
             function()
-                print("OnEnable")
                 PoliMysticEnchantingFrameAutoReforgeButton:Enable()
                 WeakAuras.ScanEvents("POLI_REFORGE_ITEM_UPDATE")
             end
     )
 
-    EnchantCollection.Slots.ReforgeTab.Button1:HookScript("OnUpdate",
-            function(self)
-                print(self:GetName() .. " OnUpdate");
-            end
-    )
 
-    EnchantCollection.Slots.ReforgeTab.Button1:HookScript("OnShow",
-            function(self)
-                print("OnShow");
-                print(self:GetName() .. " on show with");
-                if string.find(self:GetText(), "Reforge") then
-                    if self:IsEnabled() then
-                        print("Enabled");
-                    else
-                        print("Disabled");
-                    end
-                end
-                WeakAuras.ScanEvents("POLI_LOAD_MYSTIC_ENCHANTS");
+    EnchantCollection:HookScript("OnShow",
+            function()
+                WeakAuras.ScanEvents("POLI_LOAD_MYSTIC_ENCHANTS")
             end
     )
 end
@@ -124,3 +109,4 @@ function aura_env.findNextInsignia()
         slotIndex = 0
     end
 end
+
