@@ -1,21 +1,9 @@
 local options = aura_env.config;
 
+aura_env.REAuraCalls = 0;
+aura_env.RELastExecutionTime = 0;
+aura_env.REExecutionCooldown = 2;
 aura_env.auratable = aura_env.constructAuraTable();
-
-function aura_env.validateAuras(auratable)
-    for key, auraName in ipairs(auraTable) do
-        local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable,
-        shouldConsolidate, spellId = UnitBuff("player", auraName, nil, "PLAYER");
-
-        if spellId then
-            -- The player has the specified buff
-            print("You have the buff: " .. auraName);
-            return false;
-        end
-    end
-
-    return true;
-end
 
 function aura_env.constructAuraTable()
     local hasteAuras = options.hasteauras;
@@ -27,4 +15,18 @@ function aura_env.constructAuraTable()
     end
 
     return elements;
+end
+
+function aura_env.throttleExecution()
+    local currentTime = GetTime();
+    local lastExecutionTime = aura_env.RELastExecutionTime;
+    local executionCooldown = aura_env.REExecutionCooldown;
+
+    if currentTime - lastExecutionTime >= executionCooldown then
+        aura_env.RELastExecutionTime = currentTime;
+
+        return true;
+    end
+
+    return false;
 end
